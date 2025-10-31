@@ -15,6 +15,6 @@
     "utils": "@smartgrow/ui/lib/utils",
     "hooks": "@smartgrow/ui/hooks",
     "lib": "@smartgrow/ui/lib",
-    "ui": "@smartgrow/ui/components"
+    "ui": "@smartgrow/ui/components/ui"
   }
 }

@@ -33,5 +33,5 @@ import { Button } from "@smartgrow/ui/components/button";
 ## Installing at root level
 
 ```bash
-pnpm i prettier-plugin-tailwindcss -w
+pnpm i <package_name> -w
 ```
