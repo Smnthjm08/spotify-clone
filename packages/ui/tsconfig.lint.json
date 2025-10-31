@@ -1,6 +1,7 @@
 {
-  "extends": "@workspace/typescript-config/react-library.json",
+  "extends": "@smartgrow/typescript-config/react-library.json",
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
     "outDir": "dist"
   },
   "include": ["src", "turbo"],
