@@ -1,10 +1,15 @@
 {
   "extends": "@smartgrow/typescript-config/react-library.json",
   "compilerOptions": {
+       /* use modern ESM output compatible with bundlers like Vite */
+    "module": "ESNext",
+   /* Allow bundler-style resolution (no need for .js extensions in imports) */
+    "moduleResolution": "bundler",
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@smartgrow/ui/*": ["./src/*"]
-    }
+    },
+    "types": ["node"]
   },
   "include": ["."],
   "exclude": ["node_modules", "dist"]

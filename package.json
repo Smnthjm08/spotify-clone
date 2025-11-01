@@ -11,7 +11,6 @@
   "devDependencies": {
     "@smartgrow/eslint-config": "workspace:*",
     "@smartgrow/typescript-config": "workspace:*",
-    "@types/minimatch": "^6.0.0",
     "prettier": "^3.6.2",
     "turbo": "^2.5.5",
     "typescript": "5.7.3"

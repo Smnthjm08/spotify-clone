@@ -6,11 +6,13 @@
   ],
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@workspace/ui/*": ["../../packages/ui/src/*"]
-    }
+      "@smartgrow/ui/*": ["../../packages/ui/src/*"]
+    },
+    "types": ["node"]
   },
 
   "exclude": ["node_modules"]
