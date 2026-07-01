@@ -4,8 +4,8 @@ use crate::transaction::{AccountId, Transaction};
 
 #[derive(Default)]
 pub struct LockTable {
-    pub read_locks: HashMap<AccountId, usize>,
-    pub write_locks: HashMap<AccountId, usize>,
+    read_locks: HashMap<AccountId, usize>,
+    write_locks: HashMap<AccountId, usize>,
 }
 
 impl LockTable {
@@ -14,13 +14,17 @@ impl LockTable {
     }
 
     pub fn can_lock(&self, tx: &Transaction) -> bool {
-        for account in &tx.writes {
-            if self.read_locks.get(account).copied().unwrap_or(0) > 0 {
+        for account in &tx.reads {
+            if self.write_locks.get(account).copied().unwrap_or(0) > 0 {
                 return false;
             }
         }
 
-        for account in &tx.reads {
+        for account in &tx.writes {
+            if self.read_locks.get(account).copied().unwrap_or(0) > 0 {
+                return false;
+            }
+
             if self.write_locks.get(account).copied().unwrap_or(0) > 0 {
                 return false;
             }

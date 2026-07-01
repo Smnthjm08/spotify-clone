@@ -5,4 +5,5 @@ edition = "2024"
 
 [dependencies]
 criterion = "0.8.2"
+rand = "0.10.1"
 rayon = "1.12.0"
