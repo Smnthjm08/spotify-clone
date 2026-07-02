@@ -2,7 +2,7 @@ use std::time::Instant;
 
 use crate::{
     executor::execute_parallel,
-    metrics::{RunResult, print_comparison},
+    metrics::{print_comparison, RunResult},
     scheduler::Scheduler,
     sequential::execute_sequential,
     workload::generate_workload,
@@ -19,60 +19,69 @@ mod workload;
 
 const TRANSACTION_COUNT: usize = 1000;
 const ACCOUNT_COUNT: u32 = 200;
-const WORKER_UNITS: u32 = 10;
+const WORK_UNITS: u32 = 10;
+
+const CONTENTION_LEVELS: [(&str, f64); 5] = [
+    ("No Contention", 0.0),
+    ("Low Contention", 0.25),
+    ("Medium Contention", 0.50),
+    ("High Contention", 0.75),
+    ("Very High Contention", 0.90),
+];
 
 fn run_scenario(label: &str, contention: f64) {
-    println!("\n── {} (contention: {:.0}%) ──", label, contention * 100.0);
+    println!();
+    println!("-------------------------------------------------");
+    println!("{label}");
+    println!("Contention : {:.0}%", contention * 100.0);
+    println!("-------------------------------------------------");
 
-    let workload = generate_workload(
-        TRANSACTION_COUNT,
-        ACCOUNT_COUNT,
-        contention,
-        WORKER_UNITS,
-        42,
-    );
+    let workload = generate_workload(TRANSACTION_COUNT, ACCOUNT_COUNT, contention, WORK_UNITS, 42);
 
     // Sequential baseline
     let seq_workload = workload.clone();
 
-    let t = Instant::now();
+    let start = Instant::now();
+    execute_sequential(&seq_workload);
 
-    execute_sequential(seq_workload);
     let seq_result = RunResult {
         label: "Sequential",
         transaction_count: TRANSACTION_COUNT,
-        duration: t.elapsed(),
+        duration: start.elapsed(),
     };
 
     // Parallel scheduler
-    let mut sched = Scheduler::new();
+    let mut scheduler = Scheduler::new();
 
     for tx in workload {
-        sched.enqueue(tx);
+        scheduler.enqueue(tx);
     }
-    let t = Instant::now();
-    execute_parallel(&mut sched);
+
+    let start = Instant::now();
+    execute_parallel(&mut scheduler);
 
     let par_result = RunResult {
         label: "Parallel",
         transaction_count: TRANSACTION_COUNT,
-        duration: t.elapsed(),
+        duration: start.elapsed(),
     };
 
     print_comparison(&seq_result, &par_result);
 }
 
 fn main() {
-    println!("Mini Sealevel Runtime");
+    println!("=================================================");
+    println!("        Mini Sealevel Runtime Benchmark");
+    println!("=================================================");
+    println!("Transactions : {}", TRANSACTION_COUNT);
+    println!("Accounts     : {}", ACCOUNT_COUNT);
+    println!("Work Units   : {}", WORK_UNITS);
+    println!("Rayon Threads: {}", rayon::current_num_threads());
+    println!("=================================================");
 
-    println!(
-        "Transactions: {} Accounts: {} Workers: {}",
-        TRANSACTION_COUNT, ACCOUNT_COUNT, WORKER_UNITS
-    );
-
-    run_scenario("Low contention", 0.10);
-    run_scenario("Medium contention", 0.40);
-    run_scenario("High contention", 0.80);
+    for (label, contention) in CONTENTION_LEVELS {
+        run_scenario(label, contention);
+    }
 
     println!();
 }

@@ -11,8 +11,9 @@ fn execute_transaction(tx: &Transaction) {
 
     let _ = black_box(acc);
 }
+
 // pub fn execute_sequential(transactions: &[Transaction]) {
-pub fn execute_sequential(transactions: Vec<Transaction>) {
+pub fn execute_sequential(transactions: &[Transaction]) {
     for tx in transactions {
         execute_transaction(&tx);
     }

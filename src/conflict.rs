@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use crate::transaction::Transaction;
 
 /// Returns true if two transactions cannot execute in parallel.
-pub fn conflict(a: &Transaction, b: &Transaction) -> bool {
+pub fn conflicts(a: &Transaction, b: &Transaction) -> bool {
     let a_writes: HashSet<_> = a.writes.iter().collect();
     let b_writes: HashSet<_> = b.writes.iter().collect();
 
@@ -31,27 +31,30 @@ mod tests {
     }
 
     #[test]
-    fn read_read_is_not_conflict() {
-        todo!()
+    fn read_read_no_conflict() {
+        let a = tx(0, vec![1, 2], vec![]);
+        let b = tx(1, vec![1, 2], vec![]);
+        assert!(!conflicts(&a, &b));
     }
 
     #[test]
-    fn write_read_is_conflict() {
-        todo!()
+    fn write_write_conflict() {
+        let a = tx(0, vec![], vec![1]);
+        let b = tx(1, vec![], vec![1]);
+        assert!(conflicts(&a, &b));
     }
 
     #[test]
-    fn read_write_is_conflict() {
-        todo!()
+    fn write_read_conflict() {
+        let a = tx(0, vec![], vec![1]);
+        let b = tx(1, vec![1], vec![]);
+        assert!(conflicts(&a, &b));
     }
 
     #[test]
-    fn write_write_is_conflict() {
-        todo!()
-    }
-
-    #[test]
-    fn disjoint_transactions_do_not_conflict() {
-        todo!()
+    fn disjoint_no_conflict() {
+        let a = tx(0, vec![1], vec![2]);
+        let b = tx(1, vec![3], vec![4]);
+        assert!(!conflicts(&a, &b));
     }
 }

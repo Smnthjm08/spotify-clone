@@ -46,12 +46,24 @@ impl LockTable {
 
     pub fn unlock(&mut self, tx: &Transaction) {
         for account in &tx.reads {
-            let count = self.read_locks.entry(*account).or_insert(0);
-            *count = count.saturating_sub(1);
+
+            if let Some(count) = self.read_locks.get_mut(account) {
+                *count -= 1;
+
+                if *count == 0 {
+                    self.read_locks.remove(account);
+                }
+            }
         }
         for account in &tx.writes {
-            let count = self.write_locks.entry(*account).or_insert(0);
-            *count = count.saturating_sub(1);
+
+            if let Some(count) = self.write_locks.get_mut(account) {
+                *count -= 1;
+
+                if *count == 0 {
+                    self.write_locks.remove(account);
+                }
+            }
         }
     }
 }

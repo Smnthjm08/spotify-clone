@@ -17,16 +17,19 @@ pub fn print_comparison(sequential: &RunResult, parallel: &RunResult) {
     let speedup = sequential.duration.as_secs_f64() / parallel.duration.as_secs_f64();
 
     println!(
-        "  {:<12} {:>8.1} ms  ({:.0} tx/s)",
+        "{:<12} {:>8.2} ms   {:>10.0} tx/s",
         sequential.label,
         sequential.duration.as_secs_f64() * 1000.0,
         sequential.throughput()
     );
+
     println!(
-        "  {:<12} {:>8.1} ms  ({:.0} tx/s)",
+        "{:<12} {:>8.2} ms   {:>10.0} tx/s",
         parallel.label,
         parallel.duration.as_secs_f64() * 1000.0,
         parallel.throughput()
     );
-    println!("  Speedup:     {:>8.2}x", speedup);
+
+    println!("---------------------------------------------");
+    println!("Speedup      {:>8.2}x", speedup);
 }
