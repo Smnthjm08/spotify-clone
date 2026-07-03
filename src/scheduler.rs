@@ -5,11 +5,32 @@ use crate::{
     transaction::{Transaction, TransactionId},
 };
 
+#[derive(Debug, Default)]
+pub struct SchedulerMetrics {
+    pub scheduling_rounds: usize,
+    pub transactions_scheduled: usize,
+    pub total_deferrals: usize,
+    pub max_waiting_queue: usize,
+    pub max_batch_size: usize,
+    pub total_batch_size: usize,
+}
+
+impl SchedulerMetrics {
+    pub fn average_batch_size(&self) -> f64 {
+        if self.scheduling_rounds == 0 {
+            0.0
+        } else {
+            self.total_batch_size as f64 / self.scheduling_rounds as f64
+        }
+    }
+}
+
 pub struct Scheduler {
     pending: VecDeque<Transaction>,
     waiting: VecDeque<Transaction>,
     running: HashMap<TransactionId, Transaction>,
     lock_table: LockTable,
+    pub metrics: SchedulerMetrics,
 }
 
 impl Scheduler {
@@ -19,6 +40,7 @@ impl Scheduler {
             waiting: VecDeque::new(),
             running: HashMap::new(),
             lock_table: LockTable::new(),
+            metrics: SchedulerMetrics::default(),
         }
     }
 
@@ -56,11 +78,18 @@ impl Scheduler {
                 self.running.insert(tx.id, tx.clone());
                 runnable.push(tx);
             } else {
+                self.metrics.total_deferrals += 1;
                 deferred.push_back(tx);
             }
         }
 
         self.waiting = deferred;
+        self.metrics.max_waiting_queue = self.metrics.max_waiting_queue.max(self.waiting.len());
+
+        self.metrics.scheduling_rounds += 1;
+        self.metrics.transactions_scheduled += runnable.len();
+        self.metrics.max_batch_size = self.metrics.max_batch_size.max(runnable.len());
+        self.metrics.total_batch_size += runnable.len();
 
         runnable
     }

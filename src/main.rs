@@ -58,7 +58,7 @@ fn run_scenario(label: &str, contention: f64) {
     }
 
     let start = Instant::now();
-    execute_parallel(&mut scheduler);
+    let metrics = execute_parallel(&mut scheduler);
 
     let par_result = RunResult {
         label: "Parallel",
@@ -67,6 +67,22 @@ fn run_scenario(label: &str, contention: f64) {
     };
 
     print_comparison(&seq_result, &par_result);
+
+    println!();
+    println!("  Scheduler Metrics");
+    println!("  -----------------");
+    println!("  Rounds                : {}", metrics.scheduling_rounds);
+    println!(
+        "  Transactions Scheduled: {}",
+        metrics.transactions_scheduled
+    );
+    println!("  Deferred              : {}", metrics.total_deferrals);
+    println!("  Maximum Batch Size    : {}", metrics.max_batch_size);
+    println!(
+        "  Average Batch Size    : {:.1}",
+        metrics.average_batch_size()
+    );
+    println!("  Maximum Waiting Queue : {}", metrics.max_waiting_queue);
 }
 
 fn main() {

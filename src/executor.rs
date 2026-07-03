@@ -1,4 +1,4 @@
-use crate::scheduler::Scheduler;
+use crate::scheduler::{Scheduler, SchedulerMetrics};
 use crate::transaction::Transaction;
 use rayon::prelude::*;
 use std::hint::black_box;
@@ -11,11 +11,12 @@ fn execute_transaction(tx: &Transaction) {
     let _ = black_box(acc);
 }
 
-pub fn execute_parallel(scheduler: &mut Scheduler) {
+pub fn execute_parallel(scheduler: &mut Scheduler) -> SchedulerMetrics {
     while !scheduler.is_done() {
         let batch = scheduler.schedule();
 
         if batch.is_empty() {
+            debug_assert!(scheduler.is_done(), "Scheduler reached an impossible state");
             break;
         }
 
@@ -25,4 +26,6 @@ pub fn execute_parallel(scheduler: &mut Scheduler) {
             scheduler.complete(tx.id);
         }
     }
+
+    std::mem::take(&mut scheduler.metrics)
 }

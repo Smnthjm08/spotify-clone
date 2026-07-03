@@ -20,7 +20,6 @@ fn bench_scheduler(c: &mut Criterion) {
     let mut group = c.benchmark_group("sealevel_scheduler");
 
     for &(label, contention) in &CONTENTION_LEVELS {
-
         group.bench_with_input(
             BenchmarkId::new("sequential", &label),
             &contention,
