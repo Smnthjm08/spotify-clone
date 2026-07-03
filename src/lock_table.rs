@@ -46,7 +46,6 @@ impl LockTable {
 
     pub fn unlock(&mut self, tx: &Transaction) {
         for account in &tx.reads {
-
             if let Some(count) = self.read_locks.get_mut(account) {
                 *count -= 1;
 
@@ -56,7 +55,6 @@ impl LockTable {
             }
         }
         for account in &tx.writes {
-
             if let Some(count) = self.write_locks.get_mut(account) {
                 *count -= 1;
 
@@ -79,16 +77,30 @@ mod tests {
 
     #[test]
     fn write_blocks_read() {
-        todo!()
+        let mut table = LockTable::new();
+        let writer = tx(0, vec![], vec![1]);
+        let reader = tx(1, vec![1], vec![]);
+        table.lock(&writer);
+        assert!(!table.can_lock(&reader));
+        table.unlock(&writer);
+        assert!(table.can_lock(&reader));
     }
 
     #[test]
     fn two_readers_ok() {
-        todo!()
+        let mut table = LockTable::new();
+        let a = tx(0, vec![1], vec![]);
+        let b = tx(1, vec![1], vec![]);
+        table.lock(&a);
+        assert!(table.can_lock(&b));
     }
 
     #[test]
     fn write_blocks_write() {
-        todo!()
+        let mut table = LockTable::new();
+        let a = tx(0, vec![], vec![1]);
+        let b = tx(1, vec![], vec![1]);
+        table.lock(&a);
+        assert!(!table.can_lock(&b));
     }
 }

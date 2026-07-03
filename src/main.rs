@@ -2,7 +2,7 @@ use std::time::Instant;
 
 use crate::{
     executor::execute_parallel,
-    metrics::{print_comparison, RunResult},
+    metrics::{RunResult, print_comparison},
     scheduler::Scheduler,
     sequential::execute_sequential,
     workload::generate_workload,
