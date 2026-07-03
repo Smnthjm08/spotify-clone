@@ -1,0 +1,111 @@
+smnthjm08:mini-sealevel% cargo bench
+   Compiling mini-sealevel v0.1.0 (/Users/smnthjm08/Desktop/turbin3/mini-sealevel)
+warning: function `conflicts` is never used
+ --> src/conflict.rs:6:8
+  |
+6 | pub fn conflicts(a: &Transaction, b: &Transaction) -> bool {
+  |        ^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `mini-sealevel` (bin "mini-sealevel") generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 2.46s
+     Running unittests src/lib.rs (target/release/deps/mini_sealevel-b41bb9970778ad15)
+
+running 7 tests
+test conflict::tests::disjoint_no_conflict ... ignored
+test conflict::tests::read_read_no_conflict ... ignored
+test conflict::tests::write_read_conflict ... ignored
+test conflict::tests::write_write_conflict ... ignored
+test lock_table::tests::two_readers_ok ... ignored
+test lock_table::tests::write_blocks_read ... ignored
+test lock_table::tests::write_blocks_write ... ignored
+
+test result: ok. 0 passed; 0 failed; 7 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/release/deps/mini_sealevel-006bc3cfe071e7f2)
+
+running 7 tests
+test conflict::tests::disjoint_no_conflict ... ignored
+test conflict::tests::read_read_no_conflict ... ignored
+test conflict::tests::write_read_conflict ... ignored
+test conflict::tests::write_write_conflict ... ignored
+test lock_table::tests::two_readers_ok ... ignored
+test lock_table::tests::write_blocks_read ... ignored
+test lock_table::tests::write_blocks_write ... ignored
+
+test result: ok. 0 passed; 0 failed; 7 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/scheduler_bench.rs (target/release/deps/scheduler_bench-5fbc060f132b35af)
+Gnuplot not found, using plotters backend
+sealevel_scheduler/sequential/No Contention
+                        time:   [6.4414 ms 6.7782 ms 7.1020 ms]
+                        change: [+8.7753% +16.010% +23.014%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+sealevel_scheduler/parallel/No Contention
+                        time:   [3.3569 ms 3.3780 ms 3.3955 ms]
+                        change: [−4.3339% −1.9458% −0.2853%] (p = 0.05 > 0.05)
+                        No change in performance detected.
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) low severe
+  2 (2.00%) low mild
+  2 (2.00%) high mild
+sealevel_scheduler/sequential/Low Contention
+                        time:   [8.4163 ms 8.6766 ms 8.9233 ms]
+                        change: [+7.7752% +12.573% +17.918%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) low severe
+  2 (2.00%) low mild
+sealevel_scheduler/parallel/Low Contention
+                        time:   [3.6413 ms 3.6518 ms 3.6622 ms]
+                        change: [−2.2014% −1.1288% −0.2487%] (p = 0.02 < 0.05)
+                        Change within noise threshold.
+Found 8 outliers among 100 measurements (8.00%)
+  3 (3.00%) low severe
+  3 (3.00%) low mild
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+sealevel_scheduler/sequential/Medium Contention
+                        time:   [7.7751 ms 8.1417 ms 8.4919 ms]
+                        change: [+20.366% +28.810% +37.390%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+sealevel_scheduler/parallel/Medium Contention
+                        time:   [4.2832 ms 4.3217 ms 4.3644 ms]
+                        change: [−3.2085% −1.4548% +0.0528%] (p = 0.08 > 0.05)
+                        No change in performance detected.
+Found 14 outliers among 100 measurements (14.00%)
+  2 (2.00%) low severe
+  7 (7.00%) low mild
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+sealevel_scheduler/sequential/High Contention
+                        time:   [6.6188 ms 6.8836 ms 7.1478 ms]
+                        change: [+8.7598% +16.100% +23.692%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) low mild
+  1 (1.00%) high mild
+sealevel_scheduler/parallel/High Contention
+                        time:   [5.5147 ms 5.5965 ms 5.7211 ms]
+                        change: [−1.0102% +0.4825% +2.4372%] (p = 0.69 > 0.05)
+                        No change in performance detected.
+Found 12 outliers among 100 measurements (12.00%)
+  2 (2.00%) low severe
+  5 (5.00%) low mild
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+sealevel_scheduler/sequential/Very High Contention
+                        time:   [7.7783 ms 8.2160 ms 8.6348 ms]
+                        change: [+26.240% +35.314% +44.855%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+sealevel_scheduler/parallel/Very High Contention
+                        time:   [6.0652 ms 6.0838 ms 6.1011 ms]
+                        change: [−1.0238% +0.6066% +1.8742%] (p = 0.46 > 0.05)
+                        No change in performance detected.
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) low severe
+  2 (2.00%) low mild
+  1 (1.00%) high mild

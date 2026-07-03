@@ -1,0 +1,110 @@
+warning: function `conflicts` is never used
+ --> src/conflict.rs:6:8
+  |
+6 | pub fn conflicts(a: &Transaction, b: &Transaction) -> bool {
+  |        ^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `mini-sealevel` (bin "mini-sealevel") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.14s
+     Running `target/release/mini-sealevel`
+=================================================
+        Mini Sealevel Runtime Benchmark
+=================================================
+Transactions : 1000
+Accounts     : 200
+Work Units   : 10
+Rayon Threads: 8
+=================================================
+
+-------------------------------------------------
+No Contention
+Contention : 0%
+-------------------------------------------------
+Sequential       5.70 ms       175507 tx/s
+Parallel         3.17 ms       315043 tx/s
+---------------------------------------------
+Speedup          1.80x
+
+  Scheduler Metrics
+  -----------------
+  Rounds                : 15
+  Transactions Scheduled: 1000
+  Deferred              : 4242
+  Maximum Batch Size    : 117
+  Average Batch Size    : 66.7
+  Maximum Waiting Queue : 883
+
+-------------------------------------------------
+Low Contention
+Contention : 25%
+-------------------------------------------------
+Sequential       4.73 ms       211351 tx/s
+Parallel         4.82 ms       207553 tx/s
+---------------------------------------------
+Speedup          0.98x
+
+  Scheduler Metrics
+  -----------------
+  Rounds                : 22
+  Transactions Scheduled: 1000
+  Deferred              : 5166
+  Maximum Batch Size    : 115
+  Average Batch Size    : 45.5
+  Maximum Waiting Queue : 886
+
+-------------------------------------------------
+Medium Contention
+Contention : 50%
+-------------------------------------------------
+Sequential      13.91 ms        71895 tx/s
+Parallel         5.14 ms       194622 tx/s
+---------------------------------------------
+Speedup          2.71x
+
+  Scheduler Metrics
+  -----------------
+  Rounds                : 43
+  Transactions Scheduled: 1000
+  Deferred              : 8809
+  Maximum Batch Size    : 107
+  Average Batch Size    : 23.3
+  Maximum Waiting Queue : 893
+
+-------------------------------------------------
+High Contention
+Contention : 75%
+-------------------------------------------------
+Sequential      13.84 ms        72252 tx/s
+Parallel         5.81 ms       171973 tx/s
+---------------------------------------------
+Speedup          2.38x
+
+  Scheduler Metrics
+  -----------------
+  Rounds                : 55
+  Transactions Scheduled: 1000
+  Deferred              : 17251
+  Maximum Batch Size    : 88
+  Average Batch Size    : 18.2
+  Maximum Waiting Queue : 912
+
+-------------------------------------------------
+Very High Contention
+Contention : 90%
+-------------------------------------------------
+Sequential       8.24 ms       121302 tx/s
+Parallel         5.12 ms       195133 tx/s
+---------------------------------------------
+Speedup          1.61x
+
+  Scheduler Metrics
+  -----------------
+  Rounds                : 69
+  Transactions Scheduled: 1000
+  Deferred              : 22864
+  Maximum Batch Size    : 60
+  Average Batch Size    : 14.5
+  Maximum Waiting Queue : 940
+
